@@ -59,7 +59,7 @@ namespace Heroes.DB
         {
             bool bSuccess = false;
             try {
-                var result = getHeroCollection( connStr ).ReplaceOne( h => h.Id == updateHero.Id, updateHero );
+                var result = getHeroCollection( connStr ).ReplaceOne( h => h.HeroId == updateHero.HeroId, updateHero );
                 if ( result.IsAcknowledged )
                 {
                     if ( result.IsModifiedCountAvailable )

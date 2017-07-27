@@ -27,7 +27,7 @@ namespace Heroes.Api.Controllers
         }
         // GET api/heroes
         [HttpGet]
-        public JsonResult Get()
+        public ActionResult Get()
         {
             try
             {
@@ -36,33 +36,33 @@ namespace Heroes.Api.Controllers
             catch(Exception e )
             {
                 _Logger.LogError( 1, e, "GetAllHeroes", null );
-                return Json( StatusCode( 500 ) );
+                return StatusCode( 500 );
             }
         }
 
         // GET api/heroes/5
         [HttpGet("{id}")]
-        public JsonResult Get(int id)
+        public ActionResult Get(int id)
         {
             try
             {
                 var h = _DbService.getHeroByHeroId(heroId: id);
                 if ( h == null )
                 {
-                    return Json( NotFound( id ) );
+                    return NotFound( id );
                 }
                 return Json( h );
             }
             catch ( Exception e )
             {
                 _Logger.LogError( 2, e, "getHeroByHeroId", null );
-                return Json( StatusCode( 500 ) );
+                return StatusCode( 500 );
             }
         }
 
         // POST api/heroes
         [HttpPost]
-        public JsonResult Post([FromBody]HeroDto value)
+        public ActionResult Post([FromBody]HeroDto value)
         {
             try
             {
@@ -72,13 +72,30 @@ namespace Heroes.Api.Controllers
                 }
                 else
                 {
-                    return Json( StatusCode( 401 ) );
+                    return StatusCode( 401 );
                 }
             }
             catch ( Exception e )
             {
-                _Logger.LogError( 3, e, "getHeroByHeroId", null );
-                return Json( StatusCode( 500 ) );
+                _Logger.LogError( 3, e, "createHero", null );
+                return StatusCode( 500 );
+            }
+        }
+        [HttpPost( "many",Name ="PostMany" )]
+        public ActionResult PostMany( [FromBody]HeroDto[] value )
+        {
+            try
+            {
+                for ( int i = 0; i < value.Length; i++ )
+                {
+                    _DbService.createHero( value[ i ] );
+                }
+                return Created( "api/heroes/", null );
+            }
+            catch ( Exception e )
+            {
+                _Logger.LogError( 5, e, "createManyHeroes", null );
+                return StatusCode( 500 );
             }
         }
 

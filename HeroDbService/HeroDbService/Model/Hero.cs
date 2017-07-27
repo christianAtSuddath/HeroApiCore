@@ -5,12 +5,13 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace Heroes.DB.Model
 {
+    [BsonIgnoreExtraElements]
     public class Hero
     {
         
-        public ObjectId Id { get; set; }
+        //public ObjectId Id { get; set; }
 
-        [BsonElement("HeroId")]
+        //[BsonElement("HeroId")]
         public int HeroId { get; set; }
 
         [BsonElement("Name")]
