@@ -62,18 +62,24 @@ namespace Heroes.Api.Controllers
 
         // POST api/heroes
         [HttpPost]
-        public ActionResult Post([FromBody]HeroDto value)
+        public ActionResult Post([FromBody]CreateHeroDto value)
         {
             try
             {
-                if ( _DbService.createHero(value) )
+                var newId = _DbService.createHero(value);
+                if ( newId == null )
                 {
-                    return Json( Created($"api/heroes/{value.HeroId}",value) );
+                    return StatusCode(401);
                 }
                 else
                 {
-                    return StatusCode( 401 );
+                    value.HeroId = newId;
+                    return Json(Created($"api/heroes/{value.HeroId}", value)); 
                 }
+            }
+            catch ( InvalidOperationException ioe)
+            {
+                return StatusCode(401, ioe.Message);
             }
             catch ( Exception e )
             {
@@ -82,7 +88,7 @@ namespace Heroes.Api.Controllers
             }
         }
         [HttpPost( "many",Name ="PostMany" )]
-        public ActionResult PostMany( [FromBody]HeroDto[] value )
+        public ActionResult PostMany( [FromBody]CreateHeroDto[] value )
         {
             try
             {
@@ -105,6 +111,10 @@ namespace Heroes.Api.Controllers
         {
             try
             {
+                if (_DbService.getHeroByHeroId(id) == null)
+                {
+                    return NotFound(id);
+                }
                 if ( _DbService.updateHero( value ) )
                 {
                     return Ok();
@@ -126,6 +136,10 @@ namespace Heroes.Api.Controllers
         public ActionResult Delete(int id)
         {
             try {
+                if (_DbService.getHeroByHeroId(id) == null)
+                {
+                    return NotFound(id);
+                }
                 if ( _DbService.deleteHero( heroId: id ) )
                 {
                     return Ok();

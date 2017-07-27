@@ -1,18 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26430.16
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{155C0C6A-AFFC-4DBB-A54C-6A7E8B99E304}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{83B91106-CF8F-49E6-9930-03EF951D8747}"
-	ProjectSection(SolutionItems) = preProject
-		global.json = global.json
-	EndProjectSection
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "HeroApi", "src\HeroApi\HeroApi.xproj", "{BB0D7EBD-6682-43A1-9EEA-112941929DAC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HeroApi", "src\HeroApi\HeroApi.csproj", "{BB0D7EBD-6682-43A1-9EEA-112941929DAC}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "HeroDbService", "..\HeroDbService\HeroDbService\HeroDbService.xproj", "{897AFEBD-78F5-4C2B-AF3F-37A0563E9755}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HeroDbService", "..\HeroDbService\HeroDbService\HeroDbService.csproj", "{897AFEBD-78F5-4C2B-AF3F-37A0563E9755}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -26,14 +26,12 @@ namespace Heroes.Api.Repository
             return Heroes.DB.HeroSerice.FindByHeroId( _connectionString, heroId );
         }
 
-        public bool createHero( HeroDto newHero )
+        public int? createHero( CreateHeroDto newHero )
         {
             var createHero = new Hero
             {
                 HeroId = newHero.HeroId,
-                Name = newHero.Name,
-                Created = DateTime.UtcNow,
-                Updated = DateTime.UtcNow
+                Name = newHero.Name
             };
 
             return Heroes.DB.HeroSerice.CreateHero( _connectionString, createHero );
@@ -43,7 +41,6 @@ namespace Heroes.Api.Repository
         {
             var updateHero = Heroes.DB.HeroSerice.FindByHeroId( _connectionString, changedHero.HeroId );
             updateHero.Name = changedHero.Name;
-            updateHero.Updated = DateTime.UtcNow;
             return Heroes.DB.HeroSerice.ReplaceHero( _connectionString, updateHero );
         }
 

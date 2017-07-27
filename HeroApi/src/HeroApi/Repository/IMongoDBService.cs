@@ -14,7 +14,7 @@ namespace Heroes.Api.Repository
         List<Hero> getAllHeroes();
         Hero getHeroByHeroId( int heroId );
 
-        bool createHero( HeroDto newHero );
+        int? createHero( CreateHeroDto newHero );
         bool updateHero( HeroDto changedHero );
         bool deleteHero( int heroId );
     }
