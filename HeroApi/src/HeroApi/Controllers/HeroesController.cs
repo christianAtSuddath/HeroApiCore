@@ -66,15 +66,14 @@ namespace Heroes.Api.Controllers
         {
             try
             {
-                var newId = _DbService.createHero(value);
-                if ( newId == null )
+                var h = _DbService.createHero(value);
+                if ( h == null )
                 {
                     return StatusCode(401);
                 }
                 else
                 {
-                    value.HeroId = newId;
-                    return Json(Created($"api/heroes/{value.HeroId}", value)); 
+                    return Json(Created($"api/heroes/{h.HeroId}", h)); 
                 }
             }
             catch ( InvalidOperationException ioe)

@@ -63,7 +63,7 @@ namespace Heroes.DB
             return getHeroCollection(connStr).Find(h => h.Name == HeroName).FirstOrDefault();
         }
 
-        public static int? CreateHero(string connStr, Hero newHero)
+        public static Hero CreateHero(string connStr, Hero newHero)
         {
             int? newHeroId = null;
 
@@ -86,7 +86,7 @@ namespace Heroes.DB
             try
             {
                 getHeroCollection(connStr).InsertOne(newHero);
-                return newHeroId;
+                return FindByHeroId(connStr, Convert.ToInt32(newHero.HeroId));
             }
             catch (Exception e)
             {
