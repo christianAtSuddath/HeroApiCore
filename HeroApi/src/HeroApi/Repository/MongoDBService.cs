@@ -26,6 +26,11 @@ namespace Heroes.Api.Repository
             return Heroes.DB.HeroSerice.FindByHeroId( _connectionString, heroId );
         }
 
+        public Hero getHeroByName(string name)
+        {
+            return Heroes.DB.HeroSerice.FindByHeroName(_connectionString, name);
+        }
+
         public Hero createHero( CreateHeroDto newHero )
         {
             var createHero = new Hero

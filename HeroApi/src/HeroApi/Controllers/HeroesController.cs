@@ -19,24 +19,33 @@ namespace Heroes.Api.Controllers
         ILogger _Logger;
 
 
-        public HeroesController(IConfiguration config, IMongoDBService dbService, ILogger<HeroesController> logger )
+        public HeroesController(IConfiguration config, IMongoDBService dbService, ILogger<HeroesController> logger)
         {
             _Configuration = config;
             _DbService = dbService;
             _Logger = logger;
         }
+
+        #region publicInterface
         // GET api/heroes
         [HttpGet]
-        public ActionResult Get()
+        public ActionResult Get([FromQuery] string name)
         {
             try
             {
-                return Json( _DbService.getAllHeroes() );
+                if (string.IsNullOrEmpty(name))
+                {
+                    return Json(_DbService.getAllHeroes());
+                }
+                else
+                {
+                    return GetByName(name);
+                }
             }
-            catch(Exception e )
+            catch (Exception e)
             {
-                _Logger.LogError( 1, e, "GetAllHeroes", null );
-                return StatusCode( 500 );
+                _Logger.LogError(1, e, "GetAllHeroes", null);
+                return StatusCode(500);
             }
         }
 
@@ -47,18 +56,20 @@ namespace Heroes.Api.Controllers
             try
             {
                 var h = _DbService.getHeroByHeroId(heroId: id);
-                if ( h == null )
+                if (h == null)
                 {
-                    return NotFound( id );
+                    return NotFound(id);
                 }
-                return Json( h );
+                return Json(h);
             }
-            catch ( Exception e )
+            catch (Exception e)
             {
-                _Logger.LogError( 2, e, "getHeroByHeroId", null );
-                return StatusCode( 500 );
+                _Logger.LogError(2, e, "getHeroByHeroId", null);
+                return StatusCode(500);
             }
         }
+
+
 
         // POST api/heroes
         [HttpPost]
@@ -67,40 +78,41 @@ namespace Heroes.Api.Controllers
             try
             {
                 var h = _DbService.createHero(value);
-                if ( h == null )
+                if (h == null)
                 {
                     return StatusCode(401);
                 }
                 else
                 {
-                    return Json(Created($"api/heroes/{h.HeroId}", h)); 
+                    return Json(Created($"api/heroes/{h.HeroId}", h));
                 }
             }
-            catch ( InvalidOperationException ioe)
+            catch (InvalidOperationException ioe)
             {
                 return StatusCode(401, ioe.Message);
             }
-            catch ( Exception e )
+            catch (Exception e)
             {
-                _Logger.LogError( 3, e, "createHero", null );
-                return StatusCode( 500 );
+                _Logger.LogError(3, e, "createHero", null);
+                return StatusCode(500);
             }
         }
-        [HttpPost( "many",Name ="PostMany" )]
-        public ActionResult PostMany( [FromBody]CreateHeroDto[] value )
+        [HttpPost("many", Name = "PostMany")]
+
+        public ActionResult PostMany([FromBody]CreateHeroDto[] value)
         {
             try
             {
-                for ( int i = 0; i < value.Length; i++ )
+                for (int i = 0; i < value.Length; i++)
                 {
-                    _DbService.createHero( value[ i ] );
+                    _DbService.createHero(value[i]);
                 }
-                return Created( "api/heroes/", null );
+                return Created("api/heroes/", null);
             }
-            catch ( Exception e )
+            catch (Exception e)
             {
-                _Logger.LogError( 5, e, "createManyHeroes", null );
-                return StatusCode( 500 );
+                _Logger.LogError(5, e, "createManyHeroes", null);
+                return StatusCode(500);
             }
         }
 
@@ -114,19 +126,19 @@ namespace Heroes.Api.Controllers
                 {
                     return NotFound(id);
                 }
-                if ( _DbService.updateHero( value ) )
+                if (_DbService.updateHero(value))
                 {
                     return Ok();
                 }
                 else
                 {
-                    return StatusCode( 401 ) ;
+                    return StatusCode(401);
                 }
             }
-            catch ( Exception e )
+            catch (Exception e)
             {
-                _Logger.LogError( 4, e, "UpdateHero", null );
-                return StatusCode( 500 ) ;
+                _Logger.LogError(4, e, "UpdateHero", null);
+                return StatusCode(500);
             }
         }
 
@@ -134,25 +146,51 @@ namespace Heroes.Api.Controllers
         [HttpDelete("{id}")]
         public ActionResult Delete(int id)
         {
-            try {
+            try
+            {
                 if (_DbService.getHeroByHeroId(id) == null)
                 {
                     return NotFound(id);
                 }
-                if ( _DbService.deleteHero( heroId: id ) )
+                if (_DbService.deleteHero(heroId: id))
                 {
                     return Ok();
                 }
                 else
                 {
-                    return StatusCode( 401 );
+                    return StatusCode(401);
                 }
             }
-            catch(Exception e )
+            catch (Exception e)
             {
-                _Logger.LogError( 5, e, "DeleteHero", null );
-                return StatusCode( 500 );
+                _Logger.LogError(5, e, "DeleteHero", null);
+                return StatusCode(500);
             }
         }
+
+        #endregion publicInterface
+
+
+        #region private
+        // GET api/heroes/?name=Nina        
+        private ActionResult GetByName(string nameSearch)
+        {
+            try
+            {
+                var h = _DbService.getHeroByName(nameSearch);
+                if (h == null)
+                {
+                    return NotFound(nameSearch);
+                }
+                return Json(h);
+            }
+            catch (Exception e)
+            {
+                _Logger.LogError(6, e, "getHeroByName", null);
+                return StatusCode(500);
+            }
+        }
+        #endregion
+
     }
 }
