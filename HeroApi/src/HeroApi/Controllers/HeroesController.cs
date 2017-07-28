@@ -177,7 +177,7 @@ namespace Heroes.Api.Controllers
         {
             try
             {
-                var h = _DbService.getHeroByName(nameSearch);
+                var h = _DbService.getHeroesByName(nameSearch);
                 if (h == null)
                 {
                     return NotFound(nameSearch);

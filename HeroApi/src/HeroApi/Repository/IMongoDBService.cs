@@ -13,7 +13,7 @@ namespace Heroes.Api.Repository
     {
         List<Hero> getAllHeroes();
         Hero getHeroByHeroId( int heroId );
-        Hero getHeroByName( string name );
+        List<Hero> getHeroesByName( string name );
 
         Hero createHero( CreateHeroDto newHero );
         bool updateHero( HeroDto changedHero );

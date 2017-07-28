@@ -58,9 +58,9 @@ namespace Heroes.DB
             return getHeroCollection(connStr).Find(h => h.HeroId == HeroId).FirstOrDefault();
         }
 
-        public static Hero FindByHeroName(string connStr, string HeroName)
+        public static List<Hero> FindByHeroesName(string connStr, string HeroName)
         {
-            return getHeroCollection(connStr).Find(h => h.Name == HeroName).FirstOrDefault();
+            return getHeroCollection(connStr).Find(h => h.Name.StartsWith(HeroName)).ToList();
         }
 
         public static Hero CreateHero(string connStr, Hero newHero)

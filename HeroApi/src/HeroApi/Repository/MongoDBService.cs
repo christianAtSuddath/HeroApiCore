@@ -26,9 +26,9 @@ namespace Heroes.Api.Repository
             return Heroes.DB.HeroSerice.FindByHeroId( _connectionString, heroId );
         }
 
-        public Hero getHeroByName(string name)
+        public List<Hero> getHeroesByName(string name)
         {
-            return Heroes.DB.HeroSerice.FindByHeroName(_connectionString, name);
+            return Heroes.DB.HeroSerice.FindByHeroesName(_connectionString, name);
         }
 
         public Hero createHero( CreateHeroDto newHero )
